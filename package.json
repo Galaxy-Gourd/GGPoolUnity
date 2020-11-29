@@ -1,0 +1,11 @@
+{
+  "name": "com.galaxygourd.ggunitypool",
+  "version": "1.0.0",
+  "displayName": "GG Unity Pool",
+  "description": "Pooling integration system for GG Unity packages.",
+  "unity": "2019.4",
+  "author": {
+    "name": "Galaxy Gourd",
+    "email": "mstephens.dev@gmail.com"
+  }
+}
