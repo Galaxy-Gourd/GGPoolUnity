@@ -19,25 +19,7 @@ namespace GGUnityPool
         #endregion Variables
 
 
-        #region Accessors
-
-        public static GameObject Pooled(GameObject go, Vector3 p, Quaternion r)
-        {
-            GameObject g = Pooled(go);
-            g.transform.SetPositionAndRotation(p, r);
-            g.SetActive(true);
-            
-            return g;
-        }
-
-        public static GameObject Pooled(GameObject go, Transform t)
-        {
-            GameObject g = Pooled(go);
-            g.transform.SetParent(t);
-            g.SetActive(true);
-            
-            return g;
-        }
+        #region Pool
         
         public static GameObject Pooled(
             GameObjectPoolConfigDataTemplate data, 
@@ -53,6 +35,15 @@ namespace GGUnityPool
             return Pooled(data.poolObject, p, r);
         }
         
+        public static GameObject Pooled(GameObject go, Transform t)
+        {
+            GameObject g = Pooled(go);
+            g.transform.SetParent(t);
+            g.SetActive(true);
+            
+            return g;
+        }
+        
         public static GameObject Pooled(
             GameObjectPoolConfigDataTemplate data, 
             Transform t,
@@ -65,13 +56,36 @@ namespace GGUnityPool
             
             return Pooled(data.poolObject, t);
         }
+        
+        public static GameObject Pooled(GameObject go, Vector3 p, Quaternion r)
+        {
+            GameObject g = Pooled(go);
+            g.transform.SetPositionAndRotation(p, r);
+            g.SetActive(true);
+            
+            return g;
+        }
+        
+        /// <summary>
+        /// Returns the next available pooled gameObject.
+        /// </summary>
+        private static GameObject Pooled(GameObject go)
+        {
+            // Find the pool for the associated gameObject
+            IPool targetPool = GetPoolForObject(go);
 
-        #endregion Accessors
+            // Return next pooled item
+            GameObjectPooledComponent g = targetPool.GetNext() as GameObjectPooledComponent;
+            g.OnAnonymousDisable();
+            return g.gameObject;
+        }
+        
+        #endregion Pool
 
 
         #region Instantiation
 
-        public static GameObject Instantiate(GameObject go)
+        internal static GameObject Instantiate(GameObject go)
         {
             return Object.Instantiate(go).gameObject;
         }
@@ -79,14 +93,14 @@ namespace GGUnityPool
         #endregion Instantiation
 
 
-        #region Public Utility
+        #region Utility
         
         public static void SetObjectPoolCapacity(
             GameObject go,
             int capacityMin, 
             int capacityMax)
         {
-            GameObjectPool targetPool = GetPoolForObject(go);
+            IPool targetPool = GetPoolForObject(go);
             targetPool.capacityMin = capacityMin;
             targetPool.capacityMax = capacityMax;
         }
@@ -95,7 +109,7 @@ namespace GGUnityPool
             GameObject go,
             int capacityMin)
         {
-            GameObjectPool targetPool = GetPoolForObject(go);
+            IPool targetPool = GetPoolForObject(go);
             targetPool.capacityMin = capacityMin;
         }
         
@@ -103,7 +117,7 @@ namespace GGUnityPool
             GameObject go,
             int capacityMax)
         {
-            GameObjectPool targetPool = GetPoolForObject(go);
+            IPool targetPool = GetPoolForObject(go);
             targetPool.capacityMax = capacityMax;
         }
         
@@ -111,7 +125,7 @@ namespace GGUnityPool
             GameObject go,
             int spilloverAllowance)
         {
-            GameObjectPool targetPool = GetPoolForObject(go);
+            IPool targetPool = GetPoolForObject(go);
             targetPool.spilloverAllowance = spilloverAllowance;
         }
         
@@ -155,26 +169,7 @@ namespace GGUnityPool
 
             return targetPool;
         }
-
-        #endregion Public Utility
         
-        
-        #region Pooling
-        
-        /// <summary>
-        /// Returns the next available pooled gameObject.
-        /// </summary>
-        private static GameObject Pooled(GameObject go)
-        {
-            // Find the pool for the associated gameObject
-            GameObjectPool targetPool = GetPoolForObject(go);
-
-            // Return next pooled item
-            GameObjectPooledComponent g = targetPool.GetNext() as GameObjectPooledComponent;
-            g.OnAnonymousDisable();
-            return g.gameObject;
-        }
-
         private static void GetAndSetPoolData(GameObjectPoolConfigDataTemplate data)
         {
             GameObjectPool targetPool = GetPoolForObject(data.poolObject);
@@ -183,6 +178,6 @@ namespace GGUnityPool
             targetPool.spilloverAllowance = data.spilloverAllowance;
         }
 
-        #endregion Pooling
+        #endregion Utility
     }
 }
