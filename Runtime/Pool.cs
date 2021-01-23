@@ -101,8 +101,8 @@ namespace GGUnityPool
             int capacityMax)
         {
             IPool targetPool = GetPoolForObject(go);
-            targetPool.capacityMin = capacityMin;
-            targetPool.capacityMax = capacityMax;
+            targetPool.CapacityMin = capacityMin;
+            targetPool.CapacityMax = capacityMax;
         }
         
         public static void SetObjectPoolCapacityMin(
@@ -110,7 +110,7 @@ namespace GGUnityPool
             int capacityMin)
         {
             IPool targetPool = GetPoolForObject(go);
-            targetPool.capacityMin = capacityMin;
+            targetPool.CapacityMin = capacityMin;
         }
         
         public static void SetObjectPoolCapacityMax(
@@ -118,7 +118,7 @@ namespace GGUnityPool
             int capacityMax)
         {
             IPool targetPool = GetPoolForObject(go);
-            targetPool.capacityMax = capacityMax;
+            targetPool.CapacityMax = capacityMax;
         }
         
         public static void SetObjectPoolSpilloverAllowance(
@@ -126,7 +126,7 @@ namespace GGUnityPool
             int spilloverAllowance)
         {
             IPool targetPool = GetPoolForObject(go);
-            targetPool.spilloverAllowance = spilloverAllowance;
+            targetPool.SpilloverAllowance = spilloverAllowance;
         }
         
         public static void DeleteGameObjectPool(GameObject go)
@@ -161,7 +161,7 @@ namespace GGUnityPool
                 targetPool = new GameObjectPool
                 {
                     pooledGameObject = go,
-                    poolLabel = "monoPool_" + go.transform.name
+                    PoolLabel = "monoPool_" + go.transform.name
                 };
                     
                 _pools.Add(targetPool);
@@ -173,9 +173,9 @@ namespace GGUnityPool
         private static void GetAndSetPoolData(GameObjectPoolConfigDataTemplate data)
         {
             GameObjectPool targetPool = GetPoolForObject(data.poolObject);
-            targetPool.capacityMin = data.poolMinimumInstanceLimit;
-            targetPool.capacityMax = data.poolMaximumInstanceLimit;
-            targetPool.spilloverAllowance = data.spilloverAllowance;
+            targetPool.CapacityMin = data.poolMinimumInstanceLimit;
+            targetPool.CapacityMax = data.poolMaximumInstanceLimit;
+            targetPool.SpilloverAllowance = data.spilloverAllowance;
         }
 
         #endregion Utility

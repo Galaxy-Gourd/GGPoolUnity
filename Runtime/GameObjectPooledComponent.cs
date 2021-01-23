@@ -11,7 +11,7 @@ namespace GGUnityPool
     {
         #region Properties
 
-        public bool availableInPool { get; set; }
+        public bool AvailableInPool { get; set; }
 
         #endregion Properties
         
@@ -92,7 +92,7 @@ namespace GGUnityPool
 
         void IClientPoolable.Claim()
         {
-            availableInPool = false;
+            AvailableInPool = false;
             if (!_go.activeSelf)
             {
                 _activateCacheFlag = true;
@@ -102,7 +102,7 @@ namespace GGUnityPool
 
         void IClientPoolable.Relinquish()
         {
-            availableInPool = true;
+            AvailableInPool = true;
             if (_go.activeSelf)
             {
                 _deactivateCacheFlag = true;
