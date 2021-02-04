@@ -179,5 +179,23 @@ namespace GGUnityPool
         }
 
         #endregion Utility
+        
+        
+        #region Reset
+
+        /// <summary>
+        /// Resets static values to prevent issues related to domain reloading
+        /// </summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        public static void Reset()
+        {
+            for (int i = _pools.Count - 1; i >= 0; i--)
+            {
+                DeleteGameObjectPool(_pools[i].pooledGameObject);
+            }
+            _pools.Clear();
+        }
+
+        #endregion Reset
     }
 }
