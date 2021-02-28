@@ -4,6 +4,9 @@
   "displayName": "GG Unity Pool",
   "description": "Pooling integration system for GG Unity packages.",
   "unity": "2019.4",
+  "dependencies": {
+    "com.galaxygourd.ggsharppool": "1.0.0"
+  },
   "author": {
     "name": "Galaxy Gourd",
     "email": "mstephens.dev@gmail.com"
