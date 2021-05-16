@@ -5,37 +5,39 @@ using UnityEngine;
 namespace GGUnityPool
 {
     /// <summary>
-    /// Controls runtime instantiation of gameobjects/prefabs
+    /// Controls runtime instantiation of pooled GameObjects.
     /// </summary>
     public static class Pool
     {
-        #region Variables
+        #region VARIABLES
 
         /// <summary>
         /// List of our current pools.
         /// </summary>
         private static readonly List<GameObjectPool> _pools = new List<GameObjectPool>();
 
-        #endregion Variables
+        #endregion VARIABLES
 
 
-        #region Pool
+        #region POOL
         
         public static GameObject Pooled(
-            GameObjectPoolConfigDataTemplate data, 
+            DataConfigSOPool data, 
             Vector3 p, 
             Quaternion r,
-            bool updatePoolProperties = true)
+            bool updatePoolProperties = false)
         {
             if (updatePoolProperties)
             {
                 GetAndSetPoolData(data);
             }
             
-            return Pooled(data.poolObject, p, r);
+            return Pooled(data.PoolObject, p, r);
         }
         
-        public static GameObject Pooled(GameObject go, Transform t)
+        public static GameObject Pooled(
+            GameObject go, 
+            Transform t)
         {
             GameObject g = Pooled(go);
             g.transform.SetParent(t);
@@ -45,7 +47,7 @@ namespace GGUnityPool
         }
         
         public static GameObject Pooled(
-            GameObjectPoolConfigDataTemplate data, 
+            DataConfigSOPool data, 
             Transform t,
             bool updatePoolProperties = true)
         {
@@ -54,10 +56,13 @@ namespace GGUnityPool
                 GetAndSetPoolData(data);
             }
             
-            return Pooled(data.poolObject, t);
+            return Pooled(data.PoolObject, t);
         }
         
-        public static GameObject Pooled(GameObject go, Vector3 p, Quaternion r)
+        public static GameObject Pooled(
+            GameObject go, 
+            Vector3 p, 
+            Quaternion r)
         {
             GameObject g = Pooled(go);
             g.transform.SetPositionAndRotation(p, r);
@@ -75,32 +80,32 @@ namespace GGUnityPool
             IPool targetPool = GetPoolForObject(go);
 
             // Return next pooled item
-            GameObjectPooledComponent g = targetPool.GetNext() as GameObjectPooledComponent;
+            ComponentPooledGameObject g = targetPool.GetNext() as ComponentPooledGameObject;
             g.OnAnonymousDisable();
             return g.gameObject;
         }
         
-        #endregion Pool
+        #endregion POOL
 
 
-        #region Instantiation
+        #region INSTANTIATION
 
         internal static GameObject Instantiate(GameObject go)
         {
             return Object.Instantiate(go).gameObject;
         }
 
-        #endregion Instantiation
+        #endregion INSTANTIATION
 
 
-        #region Utility
+        #region UTILITY
         
         public static void SetObjectPoolCapacity(
             GameObject go,
             int capacityMin, 
             int capacityMax)
         {
-            IPool targetPool = GetPoolForObject(go);
+            IPool targetPool = GetPoolForObject(go, false);
             targetPool.CapacityMin = capacityMin;
             targetPool.CapacityMax = capacityMax;
         }
@@ -109,7 +114,7 @@ namespace GGUnityPool
             GameObject go,
             int capacityMin)
         {
-            IPool targetPool = GetPoolForObject(go);
+            IPool targetPool = GetPoolForObject(go, false);
             targetPool.CapacityMin = capacityMin;
         }
         
@@ -117,7 +122,7 @@ namespace GGUnityPool
             GameObject go,
             int capacityMax)
         {
-            IPool targetPool = GetPoolForObject(go);
+            IPool targetPool = GetPoolForObject(go, false);
             targetPool.CapacityMax = capacityMax;
         }
         
@@ -125,7 +130,7 @@ namespace GGUnityPool
             GameObject go,
             int spilloverAllowance)
         {
-            IPool targetPool = GetPoolForObject(go);
+            IPool targetPool = GetPoolForObject(go, false);
             targetPool.SpilloverAllowance = spilloverAllowance;
         }
         
@@ -138,17 +143,19 @@ namespace GGUnityPool
                 _pools.Remove(p);
             }
         }
-        
+
         /// <summary>
         /// Finds and returns the pool for the given object; if none exists, a pool is created
         /// </summary>
-        public static GameObjectPool GetPoolForObject(GameObject go, bool createIfNotFound = true)
+        public static GameObjectPool GetPoolForObject(
+            GameObject go, 
+            bool createIfNotFound = true)
         {
             // Find the pool for the associated gameObject
             GameObjectPool targetPool = null;
             foreach (var pool in _pools)
             {
-                if (pool.pooledGameObject == go)
+                if (pool.PooledGameObject == go)
                 {
                     targetPool = pool;
                     break;
@@ -160,7 +167,7 @@ namespace GGUnityPool
             {
                 targetPool = new GameObjectPool
                 {
-                    pooledGameObject = go,
+                    PooledGameObject = go,
                     PoolLabel = "monoPool_" + go.transform.name
                 };
                     
@@ -170,18 +177,18 @@ namespace GGUnityPool
             return targetPool;
         }
         
-        private static void GetAndSetPoolData(GameObjectPoolConfigDataTemplate data)
+        private static void GetAndSetPoolData(DataConfigSOPool data)
         {
-            GameObjectPool targetPool = GetPoolForObject(data.poolObject);
-            targetPool.CapacityMin = data.poolMinimumInstanceLimit;
-            targetPool.CapacityMax = data.poolMaximumInstanceLimit;
-            targetPool.SpilloverAllowance = data.spilloverAllowance;
+            GameObjectPool targetPool = GetPoolForObject(data.PoolObject);
+            targetPool.CapacityMin = data.PoolMinimumInstanceLimit;
+            targetPool.CapacityMax = data.PoolMaximumInstanceLimit;
+            targetPool.SpilloverAllowance = data.SpilloverAllowance;
         }
 
-        #endregion Utility
+        #endregion UTILITY
         
         
-        #region Reset
+        #region RESET
 
         /// <summary>
         /// Resets static values to prevent issues related to domain reloading
@@ -191,11 +198,11 @@ namespace GGUnityPool
         {
             for (int i = _pools.Count - 1; i >= 0; i--)
             {
-                DeleteGameObjectPool(_pools[i].pooledGameObject);
+                DeleteGameObjectPool(_pools[i].PooledGameObject);
             }
             _pools.Clear();
         }
 
-        #endregion Reset
+        #endregion RESET
     }
 }

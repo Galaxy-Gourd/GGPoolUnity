@@ -2,6 +2,8 @@
     "name": "GG.UnityPool",
     "rootNamespace": "GGUnityPool",
     "references": [
+        "GUID:afbc0cabfa5564f968a043e2e15a562d",
+        "GUID:30245629345af4b25ae91b7c33dfe3f4",
         "GUID:fc813e216cb2e464eb66757cb87d8eb6"
     ],
     "includePlatforms": [],

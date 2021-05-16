@@ -7,17 +7,12 @@ namespace GGUnityPool
     /// This script is added to gameObjects when they are created for pooled use.
     /// Manages the gameObject lifecycle in relation to the pool ownership status.
     /// </summary>
-    public class GameObjectPooledComponent : MonoBehaviour, IClientPoolable
+    public class ComponentPooledGameObject : MonoBehaviour, IClientPoolable
     {
-        #region Properties
-
+        #region VARIABLES
+        
         public bool AvailableInPool { get; set; }
-
-        #endregion Properties
         
-        
-        #region Variables
-
         private GameObject _go;
         private IPool _pool;
         private bool _deactivateCacheFlag;
@@ -25,10 +20,10 @@ namespace GGUnityPool
         private bool _activateCacheFlag;
         private bool _anonymousFlag;
         
-        #endregion Variables
+        #endregion VARIABLES
 
 
-        #region Lifecycle
+        #region LIFECYCLE
         
         private void OnEnable()
         {
@@ -79,12 +74,12 @@ namespace GGUnityPool
             }
         }
 
-        #endregion Lifecycle
+        #endregion LIFECYCLE
 
 
-        #region Pooling
+        #region POOLING
 
-        void IClientPoolable.OnInstanceCreated(PoolBase pool)
+        void IClientPoolable.OnInstanceCreated(GGSharpPool.Pool pool)
         {
             _pool = pool;
             _go = gameObject;
@@ -124,6 +119,6 @@ namespace GGUnityPool
             Destroy(_go);
         }
 
-        #endregion Pooling
+        #endregion POOLING
     }
 }
