@@ -1,7 +1,7 @@
-using GGSharpPool;
+using GG.Pool.Base;
 using UnityEngine;
 
-namespace GGUnityPool
+namespace GG.Pool.Unity
 {
     /// <summary>
     /// This script is added to gameObjects when they are created for pooled use.
@@ -79,7 +79,7 @@ namespace GGUnityPool
 
         #region POOLING
 
-        void IClientPoolable.OnInstanceCreated(GGSharpPool.Pool pool)
+        void IClientPoolable.OnInstanceCreated(Base.Pool pool)
         {
             _pool = pool;
             _go = gameObject;

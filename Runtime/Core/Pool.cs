@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using GGSharpPool;
+using GG.Pool.Base;
 using UnityEngine;
 
-namespace GGUnityPool
+namespace GG.Pool.Unity
 {
     /// <summary>
     /// Controls runtime instantiation of pooled GameObjects.

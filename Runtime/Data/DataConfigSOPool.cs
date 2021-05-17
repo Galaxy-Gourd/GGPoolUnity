@@ -1,7 +1,7 @@
-using GGUnityData;
+using GG.Data.Unity;
 using UnityEngine;
 
-namespace GGUnityPool
+namespace GG.Pool.Unity
 {
     [CreateAssetMenu(
         fileName = "Data Config Pool",

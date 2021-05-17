@@ -1,12 +1,12 @@
-using GGSharpPool;
+using GG.Pool.Base;
 using UnityEngine;
 
-namespace GGUnityPool
+namespace GG.Pool.Unity
 {
     /// <summary>
     /// Base class for GameObject pools. Used automatically by Pool.cs
     /// </summary>
-    public class GameObjectPool : GGSharpPool.Pool
+    public class GameObjectPool : Base.Pool
     {
         #region VARIABLES
 
