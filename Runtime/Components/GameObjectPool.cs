@@ -1,12 +1,12 @@
-using GG.Pool.Base;
+using GGPoolBase;
 using UnityEngine;
 
-namespace GG.Pool.Unity
+namespace GGPoolUnity
 {
     /// <summary>
     /// Base class for GameObject pools. Used automatically by Pool.cs
     /// </summary>
-    public class GameObjectPool : Base.Pool
+    public class GameObjectPool : GGPoolBase.Pool
     {
         #region VARIABLES
 
@@ -19,7 +19,7 @@ namespace GG.Pool.Unity
 
         protected override IClientPoolable CreateNewPoolable()
         {
-            GameObject newObj = Pool.Instantiate(PooledGameObject);
+            GameObject newObj = PoolManager.Instantiate(PooledGameObject);
             return newObj.AddComponent<ComponentPooledGameObject>();
         }
 

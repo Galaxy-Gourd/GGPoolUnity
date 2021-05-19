@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using GG.Pool.Base;
+using GGPoolBase;
 using UnityEngine;
 
-namespace GG.Pool.Unity
+namespace GGPoolUnity
 {
     /// <summary>
     /// Controls runtime instantiation of pooled GameObjects.
     /// </summary>
-    public static class Pool
+    public static class PoolManager
     {
         #region VARIABLES
 
