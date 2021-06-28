@@ -1,4 +1,4 @@
-using GG.Data.Unity;
+using GGDataUnity;
 using UnityEngine;
 
 namespace GGPoolUnity
